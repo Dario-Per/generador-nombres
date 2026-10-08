@@ -12,12 +12,19 @@ const datosNombres = {
       "Maximilian", "Alexander", "Ben", "Theo", "Emil", "Anton", "Moritz",
       "Matteo", "Henry", "Louis", "Niklas", "Tobias", "Julius", "Konstantin",
       "Wolfgang", "Friedrich", "Heinrich", "Klaus", "Stefan", "Andreas",
+      "Leonhard", "Valentin", "Matthäus", "Gabriel", "Raphael", "Samuel",
+      "David", "Jonathan", "Christian", "Martin", "Thomas", "Michael",
+      "Sebastian", "Dominik", "Florian", "Philipp", "Simon", "Markus",
+      "Marco", "Kevin", "Marvin", "Jannik", "Benedikt",
     ],
     femenino: [
       "Emma", "Mia", "Hannah", "Sophia", "Emilia", "Lena", "Marie", "Clara",
       "Amelia", "Mila", "Ida", "Luca", "Lea", "Johanna", "Anna", "Sophie",
       "Laura", "Nele", "Greta", "Heidi", "Ingrid", "Helga", "Ursula",
-      "Petra", "Monika", "Birgit", "Katrin", "Sabine",
+      "Petra", "Monika", "Birgit", "Katrin", "Sabine", "Mathilde", "Frieda",
+      "Paulina", "Charlotte", "Alice", "Nora", "Lily", "Melina", "Vanessa",
+      "Jasmin", "Lisa", "Sarah", "Julia", "Christina", "Sabrina", "Nadine",
+      "Stefanie", "Karin", "Renate", "Christa", "Doris", "Marlene", "Hilda",
     ],
   },
 
@@ -29,14 +36,20 @@ const datosNombres = {
       "Juan", "Luis", "Andrés", "Jesús", "Rafael", "Antonio", "Francisco",
       "José", "Emiliano", "Rodrigo", "Ricardo", "Fernando", "Alberto",
       "Eduardo", "Manuel", "Iván", "Óscar", "Pedro", "Marcos", "Tomás",
-      "Adrián", "Gerardo", "Gonzalo", "Héctor",
+      "Adrián", "Gerardo", "Gonzalo", "Héctor", "Miguel", "Arturo", "Rubén",
+      "Óliver", "Dylan", "Kevin", "Bryan", "César", "Raúl", "Ernesto",
+      "Ramiro", "Aurelio", "Blas", "Cirilo", "Damián", "Efraín", "Fabián",
+      "Gael", "Humberto", "Ismael", "Joaquín",
     ],
     femenino: [
       "Sofía", "Valentina", "Camila", "María", "Guadalupe", "Fernanda",
       "Ximena", "Renata", "Victoria", "Andrea", "Daniela", "Alejandra",
       "Paulina", "Gabriela", "Adriana", "Carolina", "Rocío", "Patricia",
       "Rosa", "Carmen", "Elena", "Lucía", "Regina", "Isabella", "Natalia",
-      "Perla", "Citlali", "Itzel", "Dulce", "Rebeca",
+      "Perla", "Citlali", "Itzel", "Dulce", "Rebeca", "Abril", "Alondra",
+      "Belén", "Esmeralda", "Fabiola", "Griselda", "Irlanda", "Jimena",
+      "Lourdes", "Marisol", "Nayeli", "Olga", "Priscila", "Quetzalli",
+      "Selene", "Tania", "Xóchitl", "Yolanda", "Zulema", "Aurora", "Claudia",
     ],
   },
 
@@ -47,13 +60,19 @@ const datosNombres = {
       "Wei", "Ming", "Jun", "Jian", "Lei", "Feng", "Qiang", "Gang",
       "Bin", "Chao", "Hao", "Yang", "Peng", "Tao", "Xin", "Bo",
       "Fan", "Jie", "Kang", "Long", "Rui", "Xiang", "Yu", "Zhe",
-      "Chen", "Li", "Wen", "Zhi", "Yong", "Xiaoping",
+      "Chen", "Li", "Wen", "Zhi", "Yong", "Xiaoping", "Jianhua",
+      "Guoqiang", "Wenhao", "Zhiyuan", "Junjie", "Haoran", "Yuxuan",
+      "Zeyu", "Xinyang", "Zihao", "Bohan", "Ruize", "Jinhao", "Yuanhao",
+      "Zhihao", "Longwei", "Jianjun", "Guoming", "Ding", "Kai", "Xuan",
     ],
     femenino: [
       "Mei", "Ling", "Xiu", "Fang", "Yan", "Hua", "Jing", "Na",
       "Xin", "Zhen", "Xia", "Ying", "Chun", "Fen", "Juan", "Lan",
       "Ping", "Rong", "Wen", "Yaqin", "Lihua", "Xiuying", "Dan", "Li",
       "Xiao", "Yanling", "Huiling", "Shufen", "Meiling", "Guizhen",
+      "Yuting", "Yuxin", "Xinyi", "Jiaqi", "Siqi", "Yue", "Shanshan",
+      "Tingting", "Caihong", "Lifen", "Yuyan", "Qing", "Nana", "Liling",
+      "Xiuling", "Cuiping", "Ailing", "Peiyu", "Yiru", "Siyu", "Wanqing",
     ],
   },
 
@@ -65,14 +84,20 @@ const datosNombres = {
       "Alexandre", "François", "Julien", "Théo", "Baptiste", "Romain",
       "Maxime", "Clément", "Hugo", "Lucas", "Nathan", "Enzo", "Mathis",
       "Tom", "Gaspard", "Émile", "Paul", "Victor", "Adrien", "Jules",
-      "Quentin", "Florian", "Sébastien", "Olivier",
+      "Quentin", "Florian", "Sébastien", "Olivier", "Guillaume", "Matthieu",
+      "Vincent", "Christophe", "Stéphane", "Alain", "Marcel", "Cédric",
+      "Loïc", "Aurélien", "Rémi", "Thibault", "Corentin", "Étienne",
+      "Félix", "Gaston", "Henri", "Léo", "Bastien", "Cyprien", "Amaury",
     ],
     femenino: [
       "Camille", "Marie", "Louise", "Léa", "Chloé", "Manon", "Emma",
       "Sarah", "Julie", "Anaïs", "Laura", "Marine", "Justine", "Élodie",
       "Célia", "Juliette", "Alice", "Inès", "Lucie", "Margaux", "Océane",
       "Amélie", "Aurélie", "Céline", "Émilie", "Isabelle", "Nathalie",
-      "Sandrine", "Véronique", "Yvette",
+      "Sandrine", "Véronique", "Yvette", "Colombe", "Solène", "Maëlys",
+      "Amandine", "Delphine", "Florence", "Hélène", "Aurore", "Béatrice",
+      "Cécile", "Colette", "Denise", "Élise", "Françoise", "Geneviève",
+      "Irène", "Joséphine", "Marguerite", "Suzanne", "Vivienne", "Marianne",
     ],
   },
 };
@@ -121,11 +146,19 @@ function generarNombres(nacionalidades, genero, cantidad, numNombres) {
   const resultado = nacionalidades.map((clave, i) => {
     const datos = datosNombres[clave];
     const pool = barajar(genero === "masculino" ? datos.masculino : datos.femenino);
-    const cuenta = base + extras[i];
+    const cuenta = Math.min(base + extras[i], pool.length);
 
     const nombres = [];
+    const usados = new Set(); // evitar repetir el primer nombre
+
     for (let k = 0; k < cuenta; k++) {
-      const primero = pool[k % pool.length];
+      // Elegir un primer nombre no usado aún en este grupo
+      let primero = pool[k % pool.length];
+      while (usados.has(primero)) {
+        primero = elementoAleatorio(pool);
+      }
+      usados.add(primero);
+
       const entrada = [primero];
 
       if (numNombres === 2 && pool.length > 1) {

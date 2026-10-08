@@ -10,6 +10,7 @@ Proyecto de frontend básico que genera hasta **20 sugerencias de nombres** de f
 - Los colores azul y rosa se aplican de forma consistente en los botones, el botón de generar y las tarjetas de resultados.
 - Genera hasta **20 nombres** aleatorios (solo nombres de pila, sin apellidos).
 - **1 o 2 nombres por persona:** el usuario puede elegir si cada resultado lleva un solo nombre o dos.
+- **Gran variedad de nombres:** más de 400 nombres en total (~50 por nacionalidad y género), incluyendo nombres tradicionales y modernos.
 - **Resultados agrupados por nacionalidad:** los nombres se organizan en secciones por país y en orden alfabético, no esparcidos.
 - La cantidad total se distribuye de forma equitativa entre las nacionalidades seleccionadas.
 - Sin dependencias externas: solo HTML, CSS y JavaScript puro.
