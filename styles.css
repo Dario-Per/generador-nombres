@@ -1,3 +1,22 @@
+/* ============================================================
+   Variables de color por género
+   ============================================================ */
+:root {
+  --masculine: #2563eb;          /* azul */
+  --masculine-light: #eff6ff;
+  --masculine-dark: #1d4ed8;
+  --feminine: #db2777;           /* rosa */
+  --feminine-light: #fdf2f8;
+  --feminine-dark: #be185d;
+  --active-gender: var(--masculine);
+  --active-gender-light: var(--masculine-light);
+}
+
+body.gender-feminine {
+  --active-gender: var(--feminine);
+  --active-gender-light: var(--feminine-light);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -19,14 +38,17 @@ body {
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-  max-width: 560px;
+  max-width: 620px;
   width: 100%;
   padding: 32px;
 }
 
+/* ============================================================
+   Encabezado
+   ============================================================ */
 .header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .header h1 {
@@ -39,52 +61,150 @@ body {
   font-size: 0.95rem;
 }
 
-.controls {
+/* ============================================================
+   Opciones (nacionalidad, género, cantidad)
+   ============================================================ */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.option-group h2 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.option-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Botones de nacionalidad */
+.option-btn {
+  flex: 1;
+  min-width: 130px;
+  padding: 10px 14px;
+  background: #fafafa;
+  border: 2px solid #e5e5e5;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.option-btn:hover {
+  border-color: #bbb;
+  background: #f0f0f0;
+}
+
+.option-btn.active {
+  border-color: var(--active-gender);
+  background: var(--active-gender-light);
+  color: var(--active-gender);
+}
+
+/* Botones de género (azul / rosa) */
+.gender-row {
+  gap: 12px;
+}
+
+.gender-btn {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid;
+}
+
+.gender-btn.masculine {
+  background: var(--masculine-light);
+  border-color: var(--masculine);
+  color: var(--masculine);
+}
+
+.gender-btn.masculine:hover,
+.gender-btn.masculine.active {
+  background: var(--masculine);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.gender-btn.feminine {
+  background: var(--feminine-light);
+  border-color: var(--feminine);
+  color: var(--feminine);
+}
+
+.gender-btn.feminine:hover,
+.gender-btn.feminine.active {
+  background: var(--feminine);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(219, 39, 119, 0.35);
+}
+
+/* Cantidad + botón generar */
+.generate-row {
   display: flex;
   gap: 12px;
   align-items: center;
-  justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 24px;
 }
 
-.controls label {
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.controls input {
+.generate-row input {
   width: 90px;
-  padding: 10px;
+  padding: 12px;
   border: 2px solid #ddd;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1rem;
   text-align: center;
 }
 
-.controls input:focus {
+.generate-row input:focus {
   outline: none;
-  border-color: #000;
+  border-color: var(--active-gender);
 }
 
-.controls button {
-  padding: 12px 24px;
-  background: #000;
+#generateBtn {
+  flex: 1;
+  min-width: 200px;
+  padding: 14px 24px;
+  background: var(--active-gender);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
 }
 
-.controls button:hover {
-  background: #333;
+#generateBtn:hover {
+  filter: brightness(1.1);
 }
 
-.controls button:active {
-  transform: scale(0.97);
+#generateBtn:active {
+  transform: scale(0.98);
+}
+
+/* ============================================================
+   Resultados
+   ============================================================ */
+.result-info {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #999;
+  margin-bottom: 12px;
+  min-height: 1.2em;
 }
 
 .names-list {
@@ -97,10 +217,10 @@ body {
 .names-list li {
   background: #fafafa;
   border: 1px solid #eee;
-  border-left: 4px solid #000;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 12px 16px;
   font-size: 1.1rem;
+  font-weight: 600;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -111,6 +231,25 @@ body {
   font-size: 0.75rem;
   color: #888;
   font-weight: 400;
+}
+
+/* Color por género en las tarjetas de resultado */
+.names-list.masculine li {
+  border-left: 5px solid var(--masculine);
+  background: var(--masculine-light);
+}
+
+.names-list.masculine li .origin {
+  color: var(--masculine);
+}
+
+.names-list.feminine li {
+  border-left: 5px solid var(--feminine);
+  background: var(--feminine-light);
+}
+
+.names-list.feminine li .origin {
+  color: var(--feminine);
 }
 
 .empty-message {
@@ -127,5 +266,18 @@ body {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 480px) {
+  .option-btn {
+    min-width: 100%;
+  }
+
+  .gender-btn {
+    min-width: 100%;
   }
 }

@@ -1,12 +1,13 @@
-# 🇩🇪 Generador de Nombres Alemanes
+# 🌍 Generador de Nombres
 
-Proyecto de frontend básico que genera hasta **10 sugerencias de nombres de origen alemán** de forma aleatoria.
+Proyecto de frontend básico que genera hasta **10 sugerencias de nombres** de forma aleatoria, eligiendo **nacionalidad** y **género**.
 
 ## Características
 
-- Genera nombres completos aleatorios (nombre de pila + apellido) de origen alemán.
-- Incluye nombres masculinos, femeninos y apellidos tradicionales alemanes.
-- El usuario puede elegir cuántos nombres generar (de 1 a 10).
+- **4 nacionalidades disponibles:** Alemán 🇩🇪, Mexicano 🇲🇽, Chino 🇨🇳 y Francés 🇫🇷.
+- **Selector de género:** Masculino (azul 🔵) y Femenino (rosa 🔵).
+- Los colores azul y rosa se aplican de forma consistente en los botones, el botón de generar y las tarjetas de resultados.
+- Genera nombres completos aleatorios (nombre de pila + apellido) según la selección.
 - Sin dependencias externas: solo HTML, CSS y JavaScript puro.
 
 ## Cómo ejecutarlo
@@ -30,8 +31,8 @@ python -m http.server
 
 ```
 ├── index.html   → Estructura de la página
-├── styles.css   → Estilos y animaciones
-├── script.js    → Lógica del generador de nombres
+├── styles.css   → Estilos, animaciones y colores por género
+├── script.js    → Lógica del generador y datos de nombres
 └── README.md    → Este archivo
 ```
 
