@@ -10,13 +10,13 @@
   <main class="container">
     <header class="header">
       <h1>🌍 Generador de Nombres</h1>
-      <p>Elige nacionalidad y género, y genera hasta 10 sugerencias de nombres de forma aleatoria.</p>
+      <p>Elige una o varias nacionalidades, el género y genera hasta 20 nombres de forma aleatoria.</p>
     </header>
 
     <section class="options">
-      <!-- Nacionalidad -->
+      <!-- Nacionalidad (selección múltiple) -->
       <div class="option-group">
-        <h2>🗺️ Nacionalidad</h2>
+        <h2>🗺️ Nacionalidad <span class="hint">(elige una o varias)</span></h2>
         <div class="option-row" id="nationalityGroup">
           <button class="option-btn active" data-nationality="alemana">🇩🇪 Alemán</button>
           <button class="option-btn" data-nationality="mexicana">🇲🇽 Mexicano</button>
@@ -36,9 +36,9 @@
 
       <!-- Cantidad y botón -->
       <div class="option-group">
-        <h2>🔢 Cantidad</h2>
+        <h2>🔢 Cantidad <span class="hint">(máx. 20)</span></h2>
         <div class="generate-row">
-          <input type="number" id="quantity" min="1" max="10" value="10" />
+          <input type="number" id="quantity" min="1" max="20" value="20" />
           <button id="generateBtn">🎲 Generar nombres</button>
         </div>
       </div>

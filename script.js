@@ -1,5 +1,6 @@
 // ============================================================
 // Generador de nombres por nacionalidad y género
+// (solo nombres, sin apellidos)
 // ============================================================
 
 const datosNombres = {
@@ -17,13 +18,6 @@ const datosNombres = {
       "Amelia", "Mila", "Ida", "Luca", "Lea", "Johanna", "Anna", "Sophie",
       "Laura", "Nele", "Greta", "Heidi", "Ingrid", "Helga", "Ursula",
       "Petra", "Monika", "Birgit", "Katrin", "Sabine",
-    ],
-    apellidos: [
-      "Müller", "Schmidt", "Schneider", "Fischer", "Weber", "Meyer", "Wagner",
-      "Becker", "Hoffmann", "Schäfer", "Koch", "Bauer", "Richter", "Klein",
-      "Wolf", "Schröder", "Neumann", "Schwarz", "Zimmermann", "Braun",
-      "Krüger", "Hofmann", "Hartmann", "Lange", "Schmitt", "Werner",
-      "Schmitz", "Krause", "Meier", "Lehmann", "Fuchs", "König",
     ],
   },
 
@@ -44,13 +38,6 @@ const datosNombres = {
       "Rosa", "Carmen", "Elena", "Lucía", "Regina", "Isabella", "Natalia",
       "Perla", "Citlali", "Itzel", "Dulce", "Rebeca",
     ],
-    apellidos: [
-      "García", "Hernández", "López", "Martínez", "González", "Rodríguez",
-      "Pérez", "Sánchez", "Ramírez", "Torres", "Flores", "Rivera", "Gómez",
-      "Díaz", "Cruz", "Morales", "Ortiz", "Gutiérrez", "Chávez", "Ruiz",
-      "Álvarez", "Mendoza", "Juárez", "Castillo", "Romero", "Aguilar",
-      "Vargas", "Medina", "Herrera", "Jiménez",
-    ],
   },
 
   china: {
@@ -67,12 +54,6 @@ const datosNombres = {
       "Xin", "Zhen", "Xia", "Ying", "Chun", "Fen", "Juan", "Lan",
       "Ping", "Rong", "Wen", "Yaqin", "Lihua", "Xiuying", "Dan", "Li",
       "Xiao", "Yanling", "Huiling", "Shufen", "Meiling", "Guizhen",
-    ],
-    apellidos: [
-      "Wang", "Li", "Zhang", "Liu", "Chen", "Yang", "Huang", "Zhao",
-      "Wu", "Zhou", "Xu", "Sun", "Ma", "Zhu", "Hu", "Guo",
-      "He", "Gao", "Lin", "Luo", "Zheng", "Liang", "Xie", "Song",
-      "Tang", "Han", "Feng", "Dong", "Xiao", "Pan",
     ],
   },
 
@@ -93,13 +74,6 @@ const datosNombres = {
       "Amélie", "Aurélie", "Céline", "Émilie", "Isabelle", "Nathalie",
       "Sandrine", "Véronique", "Yvette",
     ],
-    apellidos: [
-      "Martin", "Bernard", "Dubois", "Thomas", "Robert", "Richard",
-      "Petit", "Durand", "Leroy", "Moreau", "Simon", "Laurent",
-      "Lefebvre", "Michel", "Garcia", "David", "Bertrand", "Roux",
-      "Vincent", "Fournier", "Morel", "Girard", "André", "Mercier",
-      "Blanc", "Guérin", "Boyer", "Garnier", "Faure", "Rousseau",
-    ],
   },
 };
 
@@ -111,23 +85,34 @@ function elementoAleatorio(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-/**
- * Genera nombres únicos según nacionalidad y género.
- * @param {string} nacionalidad - Clave: alemana | mexicana | china | francesa
- * @param {string} genero - masculino | femenino
- * @param {number} cantidad - 1 a 10
- * @returns {string[]}
- */
-function generarNombres(nacionalidad, genero, cantidad) {
-  const datos = datosNombres[nacionalidad];
-  const nombresPila = genero === "masculino" ? datos.masculino : datos.femenino;
-  const nombres = new Set();
-
-  while (nombres.size < cantidad) {
-    const nombreCompleto = `${elementoAleatorio(nombresPila)} ${elementoAleatorio(datos.apellidos)}`;
-    nombres.add(nombreCompleto);
+/** Mezcla un array de forma aleatoria (algoritmo Fisher–Yates). */
+function barajar(array) {
+  const copia = [...array];
+  for (let i = copia.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
   }
-  return Array.from(nombres);
+  return copia;
+}
+
+/**
+ * Genera nombres únicos combinando las nacionalidades seleccionadas.
+ * @param {string[]} nacionalidades - Claves activas (ej: ["alemana", "china"]).
+ * @param {string} genero - masculino | femenino
+ * @param {number} cantidad - 1 a 20
+ * @returns {{nombre: string, nacionalidad: string}[]}
+ */
+function generarNombres(nacionalidades, genero, cantidad) {
+  // Crear el pool combinando todas las nacionalidades activas
+  const pool = [];
+  nacionalidades.forEach((clave) => {
+    const datos = datosNombres[clave];
+    const lista = genero === "masculino" ? datos.masculino : datos.femenino;
+    lista.forEach((nombre) => pool.push({ nombre, nacionalidad: clave }));
+  });
+
+  // Mezclar y tomar la cantidad pedida (sin repetir)
+  return barajar(pool).slice(0, cantidad);
 }
 
 // ============================================================
@@ -142,16 +127,27 @@ const namesList = document.getElementById("namesList");
 const emptyMessage = document.getElementById("emptyMessage");
 const resultInfo = document.getElementById("resultInfo");
 
-let nacionalidadActual = "alemana";
+let nacionalidadesActivas = ["alemana"];
 let generoActual = "masculino";
 
-// Selección de nacionalidad
+// Selección de nacionalidad (múltiple: siempre debe quedar al menos una activa)
 nationalityGroup.addEventListener("click", (e) => {
   const btn = e.target.closest("button[data-nationality]");
   if (!btn) return;
-  nationalityGroup.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
-  btn.classList.add("active");
-  nacionalidadActual = btn.dataset.nationality;
+  const clave = btn.dataset.nationality;
+  const activo = btn.classList.contains("active");
+
+  if (activo && nacionalidadesActivas.length === 1) {
+    // No se puede deseleccionar la última nacionalidad
+    return;
+  }
+
+  btn.classList.toggle("active", !activo);
+  if (activo) {
+    nacionalidadesActivas = nacionalidadesActivas.filter((n) => n !== clave);
+  } else {
+    nacionalidadesActivas.push(clave);
+  }
 });
 
 // Selección de género (cambia colores azul / rosa)
@@ -170,19 +166,24 @@ genderGroup.addEventListener("click", (e) => {
   namesList.classList.toggle("feminine", generoActual === "femenino");
 });
 
-function renderNombres(nombres, datos, genero) {
+function renderNombres(nombres) {
   namesList.innerHTML = "";
   emptyMessage.style.display = "none";
 
-  const etiquetaGenero = genero === "masculino" ? "Masculino" : "Femenino";
-  resultInfo.textContent = `${datos.bandera} ${datos.etiqueta} · ${etiquetaGenero} · ${nombres.length} nombre(s)`;
+  const etiquetaGenero = generoActual === "masculino" ? "Masculino" : "Femenino";
+  const etiquetasNac = nacionalidadesActivas
+    .map((clave) => `${datosNombres[clave].bandera} ${datosNombres[clave].etiqueta}`)
+    .join(" + ");
+  resultInfo.textContent = `${etiquetasNac} · ${etiquetaGenero} · ${nombres.length} nombre(s)`;
 
-  nombres.forEach((nombre, index) => {
+  nombres.forEach((item, index) => {
+    const datos = datosNombres[item.nacionalidad];
+
     const li = document.createElement("li");
     li.style.animationDelay = `${index * 0.05}s`;
 
     const texto = document.createElement("span");
-    texto.textContent = nombre;
+    texto.textContent = item.nombre;
 
     const origen = document.createElement("span");
     origen.className = "origin";
@@ -197,10 +198,9 @@ function renderNombres(nombres, datos, genero) {
 generateBtn.addEventListener("click", () => {
   let cantidad = parseInt(quantityInput.value, 10);
   if (isNaN(cantidad) || cantidad < 1) cantidad = 1;
-  if (cantidad > 10) cantidad = 10;
+  if (cantidad > 20) cantidad = 20;
   quantityInput.value = cantidad;
 
-  const datos = datosNombres[nacionalidadActual];
-  const nombres = generarNombres(nacionalidadActual, generoActual, cantidad);
-  renderNombres(nombres, datos, generoActual);
+  const nombres = generarNombres(nacionalidadesActivas, generoActual, cantidad);
+  renderNombres(nombres);
 });

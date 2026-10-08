@@ -79,6 +79,14 @@ body {
   margin-bottom: 10px;
 }
 
+.option-group h2 .hint {
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 400;
+  color: #bbb;
+  font-size: 0.75rem;
+}
+
 .option-row {
   display: flex;
   gap: 8px;
