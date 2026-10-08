@@ -34,6 +34,15 @@
         </div>
       </div>
 
+      <!-- Nombres por persona -->
+      <div class="option-group">
+        <h2>✏️ Nombres por persona <span class="hint">(1 o 2 nombres)</span></h2>
+        <div class="option-row namesper-row" id="namesPerPersonGroup">
+          <button class="count-btn active" data-count="1">1 nombre</button>
+          <button class="count-btn" data-count="2">2 nombres</button>
+        </div>
+      </div>
+
       <!-- Cantidad y botón -->
       <div class="option-group">
         <h2>🔢 Cantidad <span class="hint">(máx. 20)</span></h2>
@@ -47,7 +56,7 @@
     <!-- Resultados -->
     <section class="results">
       <p id="resultInfo" class="result-info"></p>
-      <ul id="namesList" class="names-list masculine"></ul>
+      <div id="namesList" class="names-list masculine"></div>
       <p id="emptyMessage" class="empty-message">
         Pulsa "Generar nombres" para comenzar.
       </p>

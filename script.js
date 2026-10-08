@@ -1,6 +1,6 @@
 // ============================================================
 // Generador de nombres por nacionalidad y género
-// (solo nombres, sin apellidos)
+// (solo nombres, sin apellidos; agrupados por nacionalidad)
 // ============================================================
 
 const datosNombres = {
@@ -96,23 +96,53 @@ function barajar(array) {
 }
 
 /**
- * Genera nombres únicos combinando las nacionalidades seleccionadas.
- * @param {string[]} nacionalidades - Claves activas (ej: ["alemana", "china"]).
+ * Genera nombres agrupados por nacionalidad.
+ * La cantidad total se distribuye de forma equitativa entre las
+ * nacionalidades activas (el resto se reparte al azar).
+ *
+ * @param {string[]} nacionalidades - Claves activas.
  * @param {string} genero - masculino | femenino
- * @param {number} cantidad - 1 a 20
- * @returns {{nombre: string, nacionalidad: string}[]}
+ * @param {number} cantidad - Total de nombres a generar (1 a 20).
+ * @param {number} numNombres - 1 o 2 nombres por persona.
+ * @returns {{nacionalidad: string, nombres: string[][]}[]}
  */
-function generarNombres(nacionalidades, genero, cantidad) {
-  // Crear el pool combinando todas las nacionalidades activas
-  const pool = [];
-  nacionalidades.forEach((clave) => {
+function generarNombres(nacionalidades, genero, cantidad, numNombres) {
+  const numGrupos = nacionalidades.length;
+  const base = Math.floor(cantidad / numGrupos);
+  const resto = cantidad % numGrupos;
+
+  // Repartir el resto al azar entre los grupos
+  const extras = new Array(numGrupos).fill(0);
+  const indices = barajar(Array.from({ length: numGrupos }, (_, i) => i));
+  for (let i = 0; i < resto; i++) {
+    extras[indices[i]] = 1;
+  }
+
+  const resultado = nacionalidades.map((clave, i) => {
     const datos = datosNombres[clave];
-    const lista = genero === "masculino" ? datos.masculino : datos.femenino;
-    lista.forEach((nombre) => pool.push({ nombre, nacionalidad: clave }));
+    const pool = barajar(genero === "masculino" ? datos.masculino : datos.femenino);
+    const cuenta = base + extras[i];
+
+    const nombres = [];
+    for (let k = 0; k < cuenta; k++) {
+      const primero = pool[k % pool.length];
+      const entrada = [primero];
+
+      if (numNombres === 2 && pool.length > 1) {
+        // Segundo nombre distinto del primero, de la misma nacionalidad
+        const candidatos = pool.filter((n) => n !== primero);
+        entrada.push(elementoAleatorio(candidatos));
+      }
+      nombres.push(entrada);
+    }
+
+    // Orden alfabético dentro del grupo
+    nombres.sort((a, b) => a[0].localeCompare(b[0], "es"));
+
+    return { nacionalidad: clave, nombres };
   });
 
-  // Mezclar y tomar la cantidad pedida (sin repetir)
-  return barajar(pool).slice(0, cantidad);
+  return resultado.filter((g) => g.nombres.length > 0);
 }
 
 // ============================================================
@@ -121,6 +151,7 @@ function generarNombres(nacionalidades, genero, cantidad) {
 
 const nationalityGroup = document.getElementById("nationalityGroup");
 const genderGroup = document.getElementById("genderGroup");
+const namesPerPersonGroup = document.getElementById("namesPerPersonGroup");
 const quantityInput = document.getElementById("quantity");
 const generateBtn = document.getElementById("generateBtn");
 const namesList = document.getElementById("namesList");
@@ -129,6 +160,7 @@ const resultInfo = document.getElementById("resultInfo");
 
 let nacionalidadesActivas = ["alemana"];
 let generoActual = "masculino";
+let nombresPorPersona = 1;
 
 // Selección de nacionalidad (múltiple: siempre debe quedar al menos una activa)
 nationalityGroup.addEventListener("click", (e) => {
@@ -166,32 +198,55 @@ genderGroup.addEventListener("click", (e) => {
   namesList.classList.toggle("feminine", generoActual === "femenino");
 });
 
-function renderNombres(nombres) {
+// Selección de nombres por persona (1 o 2)
+namesPerPersonGroup.addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-count]");
+  if (!btn) return;
+  namesPerPersonGroup.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
+  btn.classList.add("active");
+  nombresPorPersona = parseInt(btn.dataset.count, 10);
+});
+
+function renderNombres(grupos) {
   namesList.innerHTML = "";
   emptyMessage.style.display = "none";
 
+  // Resumen superior
   const etiquetaGenero = generoActual === "masculino" ? "Masculino" : "Femenino";
-  const etiquetasNac = nacionalidadesActivas
-    .map((clave) => `${datosNombres[clave].bandera} ${datosNombres[clave].etiqueta}`)
+  const etiquetasNac = grupos
+    .map((g) => `${datosNombres[g.nacionalidad].bandera} ${datosNombres[g.nacionalidad].etiqueta}`)
     .join(" + ");
-  resultInfo.textContent = `${etiquetasNac} · ${etiquetaGenero} · ${nombres.length} nombre(s)`;
+  const total = grupos.reduce((suma, g) => suma + g.nombres.length, 0);
+  const etiquetaPorPersona = nombresPorPersona === 1 ? "1 nombre" : "2 nombres";
+  resultInfo.textContent = `${etiquetasNac} · ${etiquetaGenero} · ${etiquetaPorPersona} por persona · ${total} en total`;
 
-  nombres.forEach((item, index) => {
-    const datos = datosNombres[item.nacionalidad];
+  // Render agrupado por nacionalidad
+  grupos.forEach((grupo, grupoIndex) => {
+    const datos = datosNombres[grupo.nacionalidad];
 
-    const li = document.createElement("li");
-    li.style.animationDelay = `${index * 0.05}s`;
+    const groupDiv = document.createElement("div");
+    groupDiv.className = "name-group";
+    groupDiv.style.animationDelay = `${grupoIndex * 0.08}s`;
 
-    const texto = document.createElement("span");
-    texto.textContent = item.nombre;
+    const titulo = document.createElement("h3");
+    titulo.className = "group-title";
+    titulo.textContent = `${datos.bandera} ${datos.etiqueta} (${grupo.nombres.length})`;
+    groupDiv.appendChild(titulo);
 
-    const origen = document.createElement("span");
-    origen.className = "origin";
-    origen.textContent = `${datos.bandera} ${datos.etiqueta}`;
+    const ul = document.createElement("ul");
+    grupo.nombres.forEach((entrada, index) => {
+      const li = document.createElement("li");
+      li.style.animationDelay = `${grupoIndex * 0.08 + index * 0.04}s`;
 
-    li.appendChild(texto);
-    li.appendChild(origen);
-    namesList.appendChild(li);
+      const texto = document.createElement("span");
+      texto.textContent = entrada.join(" ");
+
+      li.appendChild(texto);
+      ul.appendChild(li);
+    });
+
+    groupDiv.appendChild(ul);
+    namesList.appendChild(groupDiv);
   });
 }
 
@@ -201,6 +256,6 @@ generateBtn.addEventListener("click", () => {
   if (cantidad > 20) cantidad = 20;
   quantityInput.value = cantidad;
 
-  const nombres = generarNombres(nacionalidadesActivas, generoActual, cantidad);
-  renderNombres(nombres);
+  const grupos = generarNombres(nacionalidadesActivas, generoActual, cantidad, nombresPorPersona);
+  renderNombres(grupos);
 });
